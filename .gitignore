@@ -12,7 +12,4 @@ docs/
 
 # Dotenv file
 .env
-<<<<<<< HEAD
 lib/
-=======
->>>>>>> fd97e2f (a)
