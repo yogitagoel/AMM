@@ -1,0 +1,2 @@
+@openzeppelin/=lib/openzeppelin-contracts/contracts/
+@openzeppelin/mocks/=lib/openzeppelin-contracts/contracts/mocks/
