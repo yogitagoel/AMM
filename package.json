@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+<<<<<<< HEAD
+    "@openzeppelin/contracts": "^5.2.0"
+=======
+    "openzeppelin-solidity": "github:Openzepplin/openzepplin-contracts"
+>>>>>>> fd97e2f (a)
+  }
+}
