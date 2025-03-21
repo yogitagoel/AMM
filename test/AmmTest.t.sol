@@ -29,10 +29,10 @@ contract AmmTest is Test {
         tokenA.approve(user1, 1e20);
         tokenB.approve(user1, 1e20);
 
-        amm.initialLiquidity(initial_reserveA, initial_reserveB);
+        amm.addLiquidity(initial_reserveA, initial_reserveB);
     }
 
-    function testFuzz_AddLiquidity(uint256 amountA, uint256 amountB) external {
+    function testAddLiquidity(uint256 amountA, uint256 amountB) external {
         vm.assume(amountA > 0);
         vm.assume(amountB > 0);
         vm.prank(user1);
@@ -42,48 +42,48 @@ contract AmmTest is Test {
         amm.addLiquidity(amountA, amountB);
     }
 
-    function testFuzz_RemoveLiquidity(uint256 liquidity) external {
+    function testRemoveLiquidity(uint256 liquidity) external {
         vm.prank(user1);
         amm.removeLiquidity(liquidity);
     }
 
-    function testFuzz_SwapAtoB(uint256 amountA) external {
+    function testSwapAtoB(uint256 amountA) external {
         vm.assume(amountA > 0);
         vm.prank(user1);
         tokenA.approve(address(amm), amountA);
         amm.swapAtoB(amountA);
     }
 
-    function testFuzz_SwapBtoA(uint256 amountB) external {
+    function testSwapBtoA(uint256 amountB) external {
         vm.assume(amountB > 0);
         vm.prank(user1);
         tokenB.approve(address(amm), amountB);
         amm.swapBtoA(amountB);
     }
 
-    function testFuzz_GetReserve() external {
+    function testGetReserve() external {
         vm.prank(user1);
         amm.getReserves();
     }
 
-    function testFuzz_GetBalance(address token) external {
+    function testGetBalance(address token) external {
         vm.prank(user1);
         amm.getBalance(token);
     }
 
-    function testFuzz_GetLiquidity() external {
+    function testGetLiquidity() external {
         vm.prank(user1);
         amm.getLiquidity();
     }
 
-    function testInvariant_ConstantProduct() public {
+    function testConstantProduct() public {
         (uint256 reserveA, uint256 reserveB) = amm.getReserves();
         uint256 beforeK = initial_reserveA * initial_reserveB;
         uint256 afterK = reserveA * reserveB;
         assert(beforeK == afterK);
     }
 
-    function testInvariant_NonNegativeReserves() public {
+    function testNonNegativeReserves() public {
         (uint256 reserveA, uint256 reserveB) = amm.getReserves();
         assert(reserveA >= 0);
         assert(reserveB >= 0);
