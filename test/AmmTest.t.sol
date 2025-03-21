@@ -14,8 +14,8 @@ contract AmmTest is Test {
     ERC20Mock public tokenA;
     ERC20Mock public tokenB;
 
-    uint initial_reserveA = 1000 * 1e18;
-    uint initial_reserveB = 1000 * 1e18;
+    uint initial_reserveA = 100 * 1e18;
+    uint initial_reserveB = 100 * 1e18;
 
     address public user = makeAddr("user");
 
@@ -24,16 +24,12 @@ contract AmmTest is Test {
         deployer = new DeployAmm();
         (amm, tokenA, tokenB) = deployer.run();
 
-        console.log("TokenA Address:", address(tokenA));
-console.log("TokenB Address:", address(tokenB));
-console.log("AMM Address:", address(amm));
 
+        tokenA.mint(address(this),1000 ether);
+        tokenB.mint(address(this),1000 ether);
 
-        tokenA.mint(address(this),100 ether);
-        tokenB.mint(address(this),100 ether);
-
-        tokenA.mint(user,100 ether);
-        tokenB.mint(user,100 ether);
+        tokenA.mint(user,1000 ether);
+        tokenB.mint(user,1000 ether);
 
         tokenA.approve(address(amm), type(uint256).max);
         tokenB.approve(address(amm), type(uint256).max);
@@ -50,10 +46,10 @@ console.log("AMM Address:", address(amm));
         vm.assume(amountA > 0);
         vm.assume(amountB > 0);
         vm.prank(user);
-        tokenA.approve(address(amm), 1e20);
-        tokenB.approve(address(amm), 1e20);
-        vm.prank(user);
         amm.addLiquidity(amountA, amountB);
+        (uint256 reserveA , uint256 reserveB) = amm.getReserves();
+        assert(reserveA==initial_reserveA+amountA);
+        assert(reserveB==initial_reserveB+amountB);
     }
 
     function testRemoveLiquidity(uint256 liquidity) external {
