@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {Script} from "forge-std/Script.sol";
+import {Script} from "../lib/forge-std/src/Script.sol";
 import {AMM} from "../src/AMM.sol";
-import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
+import {ERC20Mock} from "../lib/openzeppelin-contracts/contracts/mocks/token/ERC20Mock.sol";
 
 contract DeployAmm is Script {
     AMM public amm;
