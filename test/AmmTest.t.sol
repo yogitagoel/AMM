@@ -56,10 +56,12 @@ contract AmmTest is Test {
     }
 
     function testRemoveLiquidity(uint256 liquidity) external {
+        
+        liquidity=bound(liquidity,0,user.balance);
 
-        vm.assume(liquidity < user.balance);
         console.log(liquidity);
         console.log(user.balance);
+
         vm.prank(user);
         uint256 Iinitial_Liquidity =amm.getLiquidity();
         amm.removeLiquidity(liquidity);
