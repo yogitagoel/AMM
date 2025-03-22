@@ -58,7 +58,7 @@ contract AmmTest is Test {
     function testRemoveLiquidity(uint256 liquidity) external {
  
         console.log(address(amm).balance);
-        liquidity=bound(liquidity,1,address(amm).balance);
+        liquidity=bound(liquidity,0,address(amm).balance);
 
         console.log(liquidity);
         console.log(user.balance);
