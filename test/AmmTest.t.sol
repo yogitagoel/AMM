@@ -44,10 +44,10 @@ contract AmmTest is Test {
     }
 
     function testAddLiquidity(uint256 amountA, uint256 amountB) external {
-        require(amountA <= 1e21 && amountB <= 1e21);
+        //require(amountA <= 1e21 && amountB <= 1e21);
 
-        vm.assume(amountA > 0);
-        vm.assume(amountB > 0);
+        vm.assume(amountA > 0 && amountA <= 1e21);
+        vm.assume(amountB > 0 && amountB <= 1e21);
 
         console.log(user.balance);
         console.log(amountA);
