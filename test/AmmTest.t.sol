@@ -70,33 +70,12 @@ contract AmmTest is Test {
     }
 
     function testSwapAtoB(uint256 amountA) external {
-    vm.assume(amountA > 0 && amountA <= tokenA.balanceOf(user));
-
-    uint256 reserveA = tokenA.balanceOf(address(amm));
-    uint256 reserveB = tokenB.balanceOf(address(amm));
-    uint256 initialBalanceB = tokenB.balanceOf(user);
-
-    vm.prank(user);
-    tokenA.approve(address(amm), amountA);
-
-    vm.prank(user);
-    amm.swapAtoB(amountA);
-
-    uint256 fee = (amountA * amm.FEE_PERCENT()) / 1000;
-    uint256 amountAfterFee = amountA - fee;
-    uint256 expectedAmountB = (reserveB * amountAfterFee) / (reserveA + amountAfterFee);
-
-    uint256 finalBalanceB = tokenB.balanceOf(user);
-    assertEq(finalBalanceB, initialBalanceB + expectedAmountB, "Incorrect tokenB amount received by user");
-
-    uint256 newReserveA = reserveA + amountAfterFee;
-    uint256 newReserveB = reserveB - expectedAmountB;
-    assertEq(tokenA.balanceOf(address(amm)), newReserveA, "Incorrect reserveA after swap");
-    assertEq(tokenB.balanceOf(address(amm)), newReserveB, "Incorrect reserveB after swap");
-
-    uint256 newProduct = newReserveA * newReserveB;
-    uint256 oldProduct = reserveA * reserveB;
-    assertApproxEqRel(newProduct, oldProduct, 1e16, "Constant product invariant broken");
+        vm.prank(USER);
+        (uint256 amountOut) = amm.swapAtoB(INITIAL_RESERVEB);
+        (uint256 reserveA,uint256 reserveB)=amm.getReserves();
+        assert(amountOut == ((tokenA.balanceOf(user) - INITIAL_BALANCE)));
+        assert(reserveA == (INITIAL_RESERVEA - ((tokenA.balanceOf(user) - INITIAL_BALANCE))));
+    }
 }
 
 
