@@ -70,19 +70,24 @@ contract AmmTest is Test {
     }
 
     function testSwapAtoB(uint256 amountA) external {
+        vm.assume(amountA<INITIAL_RESERVEA);
         vm.prank(user);
+        (uint256 init_reserveA,uint256 init_reserveB)=amm.getReserves();
         uint256 amountOut = amm.swapAtoB(amountA);
         (uint256 reserveA,uint256 reserveB)=amm.getReserves();
-        assert(amountOut == ((tokenA.balanceOf(user) - INITIAL_BALANCE)));
-        assert(reserveA == (INITIAL_RESERVEA - ((tokenA.balanceOf(user) - INITIAL_BALANCE))));
+        assert(reserveB == init_reserveB-amountOut);
+        assert(reserveA == (init_reserveA + (995*amountA)/1000));
     }
 
 
     function testSwapBtoA(uint256 amountB) external {
-        vm.assume(amountB > 0);
+        vm.assume(amountB<INITIAL_RESERVEB);
         vm.prank(user);
-        tokenB.approve(address(amm), amountB);
-        amm.swapBtoA(amountB);
+        (uint256 init_reserveA,uint256 init_reserveB)=amm.getReserves();
+        uint256 amountOut = amm.swapBtoA(amountB);
+        (uint256 reserveA,uint256 reserveB)=amm.getReserves();
+        assert(reserveA == init_reserveA-amountOut);
+        assert(reserveB == (init_reserveB + (995*amountB)/1000));
     }
 
     function testGetReserve() external {

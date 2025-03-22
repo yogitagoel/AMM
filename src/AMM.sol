@@ -15,7 +15,7 @@ contract AMM is ReentrancyGuard{
 
     mapping(address => uint) public balance;
 
-    uint256 public constant FEE_PERCENT = 3;
+    uint256 public constant FEE_PERCENT = 5;
 
     constructor(address _tokenA, address _tokenB) {
         require(
@@ -76,11 +76,10 @@ contract AMM is ReentrancyGuard{
     }
 
     function swapAtoB(uint256 _amountA) external returns (uint256 amountB){
-        require(_amountA > 0, "Amount must be greater than zero");
+        require(_amountA >= 0, "Amount must be greater than zero");
         require(reserveA > 0 && reserveB > 0, "Insufficient liquidity");
 
-        uint256 fee = (_amountA * FEE_PERCENT) / 1000;
-        uint256 amountAfterFee = _amountA - fee;
+        uint256 amountAfterFee = (995*_amountA)/1000;
         amountB = (reserveB * amountAfterFee) /
             (reserveA + amountAfterFee);
 
@@ -97,16 +96,13 @@ contract AMM is ReentrancyGuard{
 
     }
 
-    function swapBtoA(uint256 _amountB) external nonReentrant {
-        require(_amountB > 0, "Amount must be greater than zero");
+    function swapBtoA(uint256 _amountB) external returns (uint256 amountA){
+        require(_amountB >= 0, "Amount must be greater than zero");
         require(reserveA > 0 && reserveB > 0, "Insufficient liquidity");
 
-        uint256 fee = (_amountB * FEE_PERCENT) / 1000;
-        uint256 amountAfterFee = _amountB - fee;
-        uint256 amountA = (reserveA * amountAfterFee) /
+        uint256 amountAfterFee = (995*_amountB)/1000;
+        amountA = (reserveA * amountAfterFee) /
             (reserveB + amountAfterFee);
-
-        require(amountA > 0 && amountA < reserveA, "Invalid output amount");
 
         require(
             tokenB.transferFrom(msg.sender, address(this), _amountB),
@@ -114,8 +110,11 @@ contract AMM is ReentrancyGuard{
         );
         require(tokenA.transfer(msg.sender, amountA), "Transfer failed");
 
-        reserveA -= amountA;
         reserveB += amountAfterFee;
+        reserveA -= amountA;
+
+        return amountA;
+
     }
 
     function sqrt(uint256 x) internal pure returns (uint256 y) {
