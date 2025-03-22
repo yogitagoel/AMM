@@ -76,7 +76,6 @@ contract AmmTest is Test {
         assert(amountOut == ((tokenA.balanceOf(user) - INITIAL_BALANCE)));
         assert(reserveA == (INITIAL_RESERVEA - ((tokenA.balanceOf(user) - INITIAL_BALANCE))));
     }
-}
 
 
     function testSwapBtoA(uint256 amountB) external {
