@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.28;
 
 import {IERC20} from "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {ReentrancyGuard} from "../lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
@@ -29,7 +29,7 @@ contract AMM is ReentrancyGuard{
     function addLiquidity(
         uint256 _amountA,
         uint256 _amountB
-    ) external nonReentrant {
+    ) external {
         require(_amountA > 0 && _amountB > 0, "Insufficient amount");
 
         require(
