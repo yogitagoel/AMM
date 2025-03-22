@@ -75,13 +75,13 @@ contract AMM is ReentrancyGuard{
         reserveB -= amountB;
     }
 
-    function swapAtoB(uint256 _amountA) external {
+    function swapAtoB(uint256 _amountA) external returns (uint256 amountB){
         require(_amountA > 0, "Amount must be greater than zero");
         require(reserveA > 0 && reserveB > 0, "Insufficient liquidity");
 
         uint256 fee = (_amountA * FEE_PERCENT) / 1000;
         uint256 amountAfterFee = _amountA - fee;
-        uint256 amountB = (reserveB * amountAfterFee) /
+        amountB = (reserveB * amountAfterFee) /
             (reserveA + amountAfterFee);
 
         require(
@@ -92,6 +92,9 @@ contract AMM is ReentrancyGuard{
 
         reserveA += amountAfterFee;
         reserveB -= amountB;
+
+        return amountB;
+
     }
 
     function swapBtoA(uint256 _amountB) external nonReentrant {
