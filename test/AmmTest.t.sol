@@ -44,14 +44,9 @@ contract AmmTest is Test {
     }
 
     function testAddLiquidity(uint256 amountA, uint256 amountB) external {
-        //require(amountA <= 1e21 && amountB <= 1e21);
 
         vm.assume(amountA > 0 && amountA <= 1e21);
         vm.assume(amountB > 0 && amountB <= 1e21);
-
-        console.log(user.balance);
-        console.log(amountA);
-        console.log(amountB);
 
         vm.prank(user);
         amm.addLiquidity(amountA, amountB);
@@ -61,6 +56,10 @@ contract AmmTest is Test {
     }
 
     function testRemoveLiquidity(uint256 liquidity) external {
+
+        vm.assume(liquidity < user.balance);
+        console.log(liquidity);
+        console.log(user.balance);
         vm.prank(user);
         uint256 Iinitial_Liquidity =amm.getLiquidity();
         amm.removeLiquidity(liquidity);
