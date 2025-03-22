@@ -59,7 +59,7 @@ contract AMM is ReentrancyGuard{
 
     function removeLiquidity(uint256 _liquidity) external {
         require(
-            _liquidity > 0 && balance[msg.sender] >= _liquidity,
+            _liquidity >= 0 && balance[msg.sender] >= _liquidity,
             "Insufficient liquidity"
         );
 
