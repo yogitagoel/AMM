@@ -16,7 +16,7 @@ contract AmmTest is Test {
 
     uint256 public constant INITIAL_RESERVEB= 100 * 1e18;
     uint256 public constant INITIAL_RESERVEA = 100 * 1e18;
-    uint256 public constant INITIAL_BALANCE=5000 ether;
+    uint256 public constant INITIAL_BALANCE=5e22;
 
     address public user = makeAddr("user");
 
@@ -44,10 +44,12 @@ contract AmmTest is Test {
     }
 
     function testAddLiquidity(uint256 amountA, uint256 amountB) external {
+        require(amountA <= 1e21 && amountB <= 1e21);
 
-        vm.assume(amountA > 0 && amountA <= 1e22);
-        vm.assume(amountB > 0 && amountB <= 1e22);
+        vm.assume(amountA > 0);
+        vm.assume(amountB > 0);
 
+        console.log(user.balance);
         console.log(amountA);
         console.log(amountB);
 
